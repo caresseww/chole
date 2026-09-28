@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>新生儿胆汁淤积 · 床旁指南（住院医师版）</title>
+<style>
+  :root{
+    --bg:#f5f7fa;--card:#fff;--line:#e2e8f0;
+    --ink:#1a2536;--ink2:#4b5c74;--ink3:#8a94a8;
+    --navy:#163d63;--blue:#1e4d7b;--blue-soft:#e8eff7;
+    --red:#b33126;--red-soft:#fdecea;
+    --amber:#c9742c;--amber-soft:#fbf0e4;
+    --green:#1d6e3f;--green-soft:#e8f4ec;
+    --purple:#6d4a98;--purple-soft:#f4eff9;
+    --mono:ui-monospace,'SF Mono',Menlo,Consolas,'Liberation Mono',monospace;
+  }
+  *{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Helvetica Neue','Microsoft YaHei',sans-serif;
+    font-size:15px;line-height:1.65;
+    -webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;
+  }
+  .wrap{max-width:820px;margin:0 auto;padding:0 16px 80px;}
+
+  /* 顶栏：渐变 hero + 固定翻页（休克/青紫同族） */
+  .stickyhead{position:sticky;top:0;z-index:60;background:var(--bg);box-shadow:0 2px 10px rgba(0,0,0,.10);}
+  .stickyhead .headinner{max-width:820px;margin:0 auto;padding:0 16px;}
+  header.top{padding:8px 0 0;background:linear-gradient(135deg,#163d63 0%,#1e4d7b 100%);}
+  .hero{max-width:820px;margin:0 auto;padding:10px 0 9px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+  .hero .t{display:flex;align-items:center;gap:10px;color:#fff;font-size:20px;font-weight:800;letter-spacing:1px;text-shadow:0 1px 3px rgba(0,0,0,.2);}
+  .hero .logo{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.28);flex-shrink:0;}
+  .hero .badges{display:flex;align-items:center;gap:6px;}
+  .internal-badge{display:inline-block;font-size:11px;font-weight:700;color:#fff;background:linear-gradient(135deg,#e0893a,#c9742c);border-radius:999px;padding:3px 11px;letter-spacing:2px;box-shadow:0 2px 6px rgba(0,0,0,.18);white-space:nowrap;}
+  .ver-badge{font-size:10px;color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.45);border-radius:999px;padding:1px 10px;letter-spacing:1px;text-align:center;white-space:nowrap;}
+  .top-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;padding-bottom:9px;}
+  body[data-page]:not([data-page="1"]) .top-actions{display:none;}
+  .btn{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:8px 14px;border-radius:8px;font-size:13px;cursor:pointer;}
+  .btn.primary{background:var(--blue);color:#fff;border-color:var(--blue);}
+  .btn.ghost-dark{background:rgba(255,255,255,.14);color:#fff;border-color:rgba(255,255,255,.4);}
+
+  /* 翻页 */
+  nav.pager{background:rgba(233,237,244,.96);backdrop-filter:blur(6px);padding:7px 0;display:flex;gap:5px;border-bottom:1px solid var(--line);overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  nav.pager::-webkit-scrollbar{display:none;}
+  .pager-inner{max-width:820px;margin:0 auto;display:flex;gap:5px;width:100%;padding:0 16px;min-width:max-content;}
+  nav.pager .ptab{flex:1;appearance:none;-webkit-appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink2);padding:8px 6px;border-radius:9px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;}
+  nav.pager .ptab.active{background:var(--navy);border-color:var(--navy);color:#fff;}
+  body.longmode nav.pager{display:none;}
+  body.longmode .stickyhead{position:static;}
+  body.longmode section.card.page{display:block !important;}
+  #exitLong{display:none;}
+  body.longmode #exitLong{display:flex;position:fixed;right:14px;bottom:14px;z-index:80;align-items:center;gap:6px;background:var(--navy);color:#fff;border:none;border-radius:999px;padding:10px 16px;font-size:13px;font-weight:600;box-shadow:0 4px 14px rgba(0,0,0,.3);cursor:pointer;}
+  section.card.page{display:none;}
+  section.card.page.active{display:block;}
+
+  /* 页卡 */
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 18px 22px;margin-bottom:18px;margin-top:14px;scroll-margin-top:118px;}
+  .card-head{display:flex;align-items:baseline;gap:10px;margin-bottom:4px;flex-wrap:wrap;}
+  .card-head .step-no{font-family:var(--mono);font-size:12px;color:#fff;background:var(--navy);border-radius:6px;padding:2px 7px;flex-shrink:0;}
+  .card-head .step-no.red{background:var(--red);}
+  .card-head .step-no.amber{background:var(--amber);}
+  .card-head .step-no.purple{background:var(--purple);}
+  .card-head .step-no.green{background:var(--green);}
+  .card-head h2{font-size:17px;margin:0;}
+  .card-sub{color:var(--ink2);font-size:13px;margin:0 0 14px;padding-left:2px;}
+  h3.sub{font-size:15px;font-weight:800;margin:20px 0 8px;color:var(--ink);display:flex;align-items:center;gap:8px;}
+  h3.sub::before{content:'';width:4px;height:16px;border-radius:2px;background:var(--blue);flex-shrink:0;}
+  h3.sub .n{font-size:11.5px;color:var(--ink3);font-weight:600;margin-left:2px;}
+
+  /* 提示盒 */
+  .bluebox{background:var(--blue-soft);border-radius:10px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .bluebox .t{font-weight:700;color:var(--blue);font-size:12.5px;margin-bottom:4px;letter-spacing:.5px;}
+  .redbox{background:var(--red-soft);border-radius:10px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .redbox .t{font-weight:700;color:var(--red);font-size:12.5px;margin-bottom:4px;letter-spacing:.5px;}
+  .amberbox{background:var(--amber-soft);border-radius:10px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .amberbox .t{font-weight:700;color:var(--amber);font-size:12.5px;margin-bottom:4px;letter-spacing:.5px;}
+  .greenbox{background:var(--green-soft);border-radius:10px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .greenbox .t{font-weight:700;color:var(--green);font-size:12.5px;margin-bottom:4px;letter-spacing:.5px;}
+  .purplebox{background:var(--purple-soft);border-radius:10px;padding:12px 14px;margin:12px 0;font-size:13.5px;}
+  .purplebox .t{font-weight:700;color:var(--purple);font-size:12.5px;margin-bottom:4px;letter-spacing:.5px;}
+  .bluebox b,.redbox b,.amberbox b,.greenbox b,.purplebox b{color:inherit;}
+  .box ul,.box ol{margin:4px 0 2px;padding-left:20px;}
+  .box li{margin:3px 0;}
+
+  /* 表格（窄屏横向滑动） */
+  .tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:10px 0 4px;border:1px solid var(--line);border-radius:10px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;min-width:560px;background:#fff;}
+  table.slim{min-width:0;}
+  table.mid{min-width:480px;}
+  th{background:#eef2fa;color:var(--ink2);font-size:12px;font-weight:600;text-align:left;padding:8px 10px;white-space:nowrap;border-bottom:1px solid var(--line);}
+  td{padding:8px 10px;border-bottom:1px solid #edf0f6;vertical-align:top;line-height:1.55;}
+  tr:last-child td{border-bottom:none;}
+  tbody tr:nth-child(even){background:#fafbfe;}
+  td b{color:var(--ink);}
+  td .mono{font-family:var(--mono);font-weight:700;color:var(--blue);font-size:12px;}
+  td.nm{font-weight:700;color:var(--navy);white-space:nowrap;}
+
+  .tag{display:inline-block;font-size:10.5px;padding:1.5px 8px;border-radius:20px;font-weight:600;white-space:nowrap;vertical-align:1px;}
+  .tag.red{background:var(--red-soft);color:var(--red);}
+  .tag.amber{background:var(--amber-soft);color:var(--amber);}
+  .tag.blue{background:var(--blue-soft);color:var(--blue);}
+  .tag.purple{background:var(--purple-soft);color:var(--purple);}
+  .tag.green{background:var(--green-soft);color:var(--green);}
+  .tag.grey{background:#eef1f6;color:var(--ink2);}
+
+  /* KPI 砖 */
+  .vargrid{display:grid;gap:10px;grid-template-columns:1fr 1fr;margin-top:12px;}
+  @media(max-width:480px){.vargrid{grid-template-columns:1fr 1fr;gap:8px;}}
+  .vartile{border:1px solid var(--line);border-radius:12px;padding:11px 13px;background:#fff;}
+  .vartile .vh{font-weight:800;font-size:17px;color:var(--navy);margin-bottom:3px;font-family:var(--mono);}
+  .vartile .vq{font-size:11.5px;color:var(--ink2);line-height:1.55;}
+  .vartile.a{background:linear-gradient(180deg,#f6f9ff,#fff);}
+  .vartile.b{background:linear-gradient(180deg,#fdf3f1,#fff);}
+  .vartile.c{background:linear-gradient(180deg,#f4f9f5,#fff);}
+  .vartile.d{background:linear-gradient(180deg,#fbf5ec,#fff);}
+
+  /* 检查/动作清单 */
+  .chk{list-style:none;margin:8px 0 0;padding:0;}
+  .chk li{display:flex;gap:9px;align-items:flex-start;padding:7px 2px;border-bottom:1px dashed #e6eaf2;font-size:13.5px;line-height:1.55;}
+  .chk li:last-child{border-bottom:none;}
+  .chk li::before{content:'☐';color:var(--blue);font-size:15px;flex-shrink:0;line-height:1.4;}
+  .chk.do li::before{content:'▶';font-size:11px;margin-top:2px;}
+  .chk li b{color:var(--ink);}
+
+  /* 红线条目 */
+  .redline{display:flex;gap:10px;align-items:flex-start;border:1px solid #f2d5cf;background:var(--red-soft);border-radius:12px;padding:11px 13px;margin-bottom:9px;font-size:13.5px;line-height:1.6;}
+  .redline .no{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--red);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+  .redline b{color:var(--red);}
+
+  /* 病因卡 */
+  .dz{border:1px solid var(--line);border-left:4px solid var(--blue);border-radius:12px;background:#fff;padding:11px 13px;margin:10px 0;}
+  .dz-t{font-weight:800;font-size:14px;margin-bottom:5px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .dz .kv{display:grid;grid-template-columns:44px 1fr;gap:2px 8px;font-size:12.5px;line-height:1.6;margin-top:3px;}
+  .dz .k{color:var(--ink3);font-weight:700;font-size:11.5px;padding-top:1px;}
+  .dz.c-red{border-left-color:var(--red);} .dz.c-red .dz-t{color:var(--red);}
+  .dz.c-blue{border-left-color:var(--blue);} .dz.c-blue .dz-t{color:var(--blue);}
+  .dz.c-purple{border-left-color:var(--purple);} .dz.c-purple .dz-t{color:var(--purple);}
+  .dz.c-amber{border-left-color:var(--amber);} .dz.c-amber .dz-t{color:var(--amber);}
+  .dz.c-green{border-left-color:var(--green);} .dz.c-green .dz-t{color:var(--green);}
+  .dz.c-grey{border-left-color:var(--ink3);} .dz.c-grey .dz-t{color:var(--ink2);}
+
+  /* 时间轴 */
+  .tl{display:grid;gap:9px;}
+  .tlrow{display:flex;gap:10px;align-items:stretch;}
+  .tlrow .when{flex:0 0 88px;background:var(--navy);color:#fff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;text-align:center;padding:8px 4px;line-height:1.4;}
+  .tlrow:nth-child(2) .when{background:#2c5578;}
+  .tlrow:nth-child(3) .when{background:#42709a;}
+  .tlrow:nth-child(4) .when{background:#5d88b0;}
+  .tlrow:nth-child(5) .when{background:#7ba0c2;}
+  .tlrow:nth-child(6) .when{background:#98b8d2;}
+  .tlrow .what{flex:1;background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:13px;line-height:1.6;}
+  .tlrow .what b{color:var(--navy);}
+
+  /* 总结 */
+  .sumbox{background:linear-gradient(135deg,#163d63,#1e4d7b);color:#fff;border-radius:14px;padding:16px 18px;margin:16px 0 8px;}
+  .sumbox .t{color:#f0c987;font-weight:800;font-size:15px;margin-bottom:8px;letter-spacing:1px;}
+  .sumbox ol{margin:0;padding-left:20px;}
+  .sumbox li{font-size:13.5px;color:#d7e0ea;margin:6px 0;line-height:1.6;}
+  .sumbox li b{color:#fff;}
+  .sumbox .koujue{margin-top:10px;background:rgba(240,201,135,.14);border-radius:10px;padding:10px 13px;font-size:13.5px;font-weight:600;color:#f2e3c4;line-height:1.9;}
+
+  /* 参考 */
+  .ref{margin-bottom:9px;font-size:12.5px;line-height:1.6;color:var(--ink2);}
+  .ref .ref-t{font-weight:600;color:var(--ink);}
+  footer.foot{margin-top:22px;padding:0 4px;color:var(--ink3);font-size:11.5px;line-height:1.8;text-align:center;}
+
+  @media print{
+    .stickyhead{position:static;box-shadow:none;}
+    nav.pager,.top-actions,#exitLong{display:none !important;}
+    section.card.page{display:block !important;page-break-before:auto;}
+    section.card{page-break-inside:avoid;}
+    body{background:#fff;}
+  }
+</style>
+</head>
+<body data-page="1">
+
+<div class="stickyhead">
+  <div class="headinner">
+    <header class="top">
+      <div class="hero">
+        <div class="t"><span class="logo">淤</span>新生儿胆汁淤积 · 床旁指南</div>
+        <div class="badges">
+          <span class="internal-badge">内部学习使用</span>
+          <span class="ver-badge">住院医师版<br>v2.0</span>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="btn primary" onclick="toggleLong(true)">📱 长图模式（截图/分享用）</button>
+      </div>
+    </header>
+    <nav class="pager">
+      <div class="pager-inner">
+        <button class="ptab active" onclick="goPage(1)">① 触发动作</button>
+        <button class="ptab" onclick="goPage(2)">② 阈值检查</button>
+        <button class="ptab" onclick="goPage(3)">③ 抢BA</button>
+        <button class="ptab" onclick="goPage(4)">④ 病因分层</button>
+        <button class="ptab" onclick="goPage(5)">⑤ 治疗剂量</button>
+        <button class="ptab" onclick="goPage(6)">⑥ 红线随访</button>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<button id="exitLong" onclick="toggleLong(false)">✕ 退出长图模式</button>
+
+<div class="wrap">
+
+<!-- ================= 页1 触发动作 ================= -->
+<section class="card page active" id="page1">
+
+  <div class="card-head"><span class="step-no">①</span><h2>床旁触发：什么样的黄疸今天必须行动</h2></div>
+  <p class="card-sub">一句话主线：<b>先定义 → 再分层 → 抢胆道闭锁（BA）手术时间窗</b>。胆汁淤积处理的中心不是"退黄"，是别错过 Kasai 窗口——窗口以天计，不以月计。</p>
+
+  <div class="redbox">
+    <div class="t">⚡ 一条铁律</div>
+    经皮胆红素和肉眼观察<b>无法区分结合 / 未结合</b>——凡触发线内黄疸，<span class="big-red">第一张化验单就是 TB + DB（分离胆红素）。</span>白陶土便 + 尿色深 = 当天走 BA 路径。
+  </div>
+
+  <h3 class="sub">六类触发：见到就启动流程<span class="n">任何一条即算</span></h3>
+  <div class="tscroll"><table class="mid">
+    <thead><tr><th style="width:46%">触发</th><th>为什么</th></tr></thead>
+    <tbody>
+      <tr><td><b>足月儿 &gt;14 天 / 早产儿 &gt;21 天仍黄</b></td><td>生理性黄疸的时间线已经走完</td></tr>
+      <tr><td><b>黄疸退而复现</b></td><td>不是"反复"，是结合胆红素升高的经典信号</td></tr>
+      <tr><td><b>白陶土便（浅黄/灰白/陶土色）或尿色深黄染透尿布</b> <span class="tag red">最紧急</span></td><td>当天开分离胆红素，按 BA 路径走</td></tr>
+      <tr><td>生后 5 天内 DB &gt;0.3–0.4 mg/dL（5.1–6.8 μmol/L）或 &gt;10% TB</td><td>早期预警线，低于常规阈值即应怀疑、复查</td></tr>
+      <tr><td><b>黄疸 + 病容</b>：反应差、发热或体温不稳、肝大、出血点</td><td>感染 / 代谢病方向</td></tr>
+      <tr><td><b>黄疸 + 特殊体征</b>：白内障、特殊面容、瘙痒抓痕、心脏杂音</td><td>直奔对应病因（页④）</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="amberbox">
+    <div class="t">⚠️ 白陶土便 · 第一紧急信号</div>
+    正常婴儿便黄 / 绿；<b>浅黄、灰白、陶土色即异常</b>。要<b>亲手掀开尿布看最靠近肛门那一段</b>——家长描述和手机照片都不可靠，医生亲自看粪便比任何描述都重要。尿色深提示结合胆红素升高（未结合胆红素不经肾小球滤过，不会染黑尿）——"黄 + 尿深 + 便白"三联，按 BA 路径走。
+  </div>
+
+  <h3 class="sub">第一小时做五件事</h3>
+  <ul class="chk do">
+    <li><b>亲手看大便和尿。</b>对照大便比色卡记录颜色——比色动作 30 秒，但它决定方向。</li>
+    <li><b>开 TB + DB（分离胆红素）。</b>不分离，一切后续无从谈起。</li>
+    <li><b>同步抽血：</b>肝功（GGT / TBA / ALT / AST / AFP）+ 空腹血糖血脂 + 凝血 + 甲功。AST≫ALT+高 AFP 指向 NICCD，反复低血糖指向全垂体 / 代谢病；<b>凝血异常即补维生素 K₁，不等结果复看</b>。</li>
+    <li><b>达标者当天预约空腹 4h + 餐后超声、送 MMP-7。</b>超声医嘱写明："检查前禁食 4h，先空腹扫胆囊，喂奶后再扫餐后收缩"——没有空腹准备，胆囊评估作废。</li>
+    <li><b>病容者按脓毒症 + 先天感染路径并行：血 / 尿培养。</b>UTI / 脓毒症可以黄疸为唯一首发表现，不等"明确感染灶"才查尿。</li>
+  </ul>
+
+  <div class="redbox">
+    <div class="t">🚨 立即呼叫上级 / 外科的情况</div>
+    <ul>
+      <li>白陶土便 + 任何支持 BA 的证据（三角征 / 胆囊异常 / GGT&gt;500 / MMP-7 升高）→ <b>当天消化 / 外科转诊，不等全套结果</b></li>
+      <li>凝血异常 / 任何出血表现 → 维生素 K₁ + 上级</li>
+      <li>顽固性低血糖 + 淤胆 → 内分泌 / 代谢会诊（全垂体功能低下可仅此表现）</li>
+      <li>黄疸伴病容 / 发热 → 脓毒症路径同步启动</li>
+      <li>Kasai 术后 3–6 个月 TB 仍 &gt;100 μmol/L → 肝移植评估</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 页2 阈值检查 ================= -->
+<section class="card page" id="page2">
+
+  <div class="card-head"><span class="step-no">②</span><h2>阈值与一线检查</h2></div>
+  <p class="card-sub">先定义"达标"，再列必做清单——达标即进入 BA 路径，未达标按生理性 / 母乳性随访。</p>
+
+  <h3 class="sub">诊断阈值：四套口径</h3>
+  <div class="tscroll"><table>
+    <thead><tr><th>指南 / 体系</th><th>结合胆红素异常阈值</th><th>补充说明</th></tr></thead>
+    <tbody>
+      <tr><td class="nm">中国 2022 婴儿胆汁淤积共识</td><td>结合 / 直接胆红素 <span class="mono">&gt;17.1 μmol/L</span>；或 DB &gt;17.1 且 <span class="mono">DB/TB &gt;20%</span></td><td>婴儿期尤其 3 月龄内；设 20% 占比是排除 δ 胆红素干扰</td></tr>
+      <tr><td class="nm">NASPGHAN/ESPGHAN</td><td>直接胆红素 <span class="mono">&gt;1.0 mg/dL（17 μmol/L）</span></td><td>即应转诊儿科消化 / 肝病；TB&gt;5 mg/dL 时 DB&gt;20% 亦异常</td></tr>
+      <tr><td class="nm">BSPGHAN / NICE（英国）</td><td>结合胆红素 <span class="mono">&gt;25 μmol/L</span>，和 / 或 <span class="mono">&gt;25% TB</span></td><td>"显著结合胆红素黄疸"需进一步检查</td></tr>
+      <tr><td class="nm">生后 5 天内早期筛查</td><td>DB <span class="mono">&gt;0.3–0.4 mg/dL</span>（5.1–6.8 μmol/L）或 <span class="mono">&gt;10% TB</span></td><td>低于常规阈值即应怀疑、复查；有中心用 0.6 mg/dL 作随访切点（敏感度 100% / 特异度 99%）</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="amberbox">
+    <div class="t">⚠️ 要点</div>
+    经皮胆红素和肉眼观察<b>无法区分结合 / 未结合</b>；尿色深提示结合胆红素升高；医生亲自看粪便颜色 &gt; 家长描述。凡触发线内黄疸，<b>第一张化验单就是分离胆红素</b>。
+  </div>
+
+  <h3 class="sub">达标后：一线必做检查清单<span class="n">每项带理由</span></h3>
+  <div class="tscroll"><table>
+    <thead><tr><th style="width:38%">项目</th><th>鉴别意义（为什么必做）</th></tr></thead>
+    <tbody>
+      <tr><td class="nm">血常规 + 网织红</td><td>血小板减少 / 瘀点 → CMV 等先天感染；贫血 / 溶血证据</td></tr>
+      <tr><td class="nm">尿常规（必要时尿培养）</td><td>尿胆红素阳性支持结合胆红素升高；UTI 可仅以黄疸为首发</td></tr>
+      <tr><td class="nm">肝功（ALT / AST / <b>GGT</b> / ALP / TBA / 白蛋白 / 球蛋白 / AFP）</td><td><b>GGT 分层是鉴别核心</b>；AST≫ALT + 高 AFP + 低血糖 → NICCD</td></tr>
+      <tr><td class="nm">空腹血糖 + 血脂</td><td>反复低血糖 → 全垂体功能低下、半乳糖血症、酪氨酸血症、线粒体病</td></tr>
+      <tr><td class="nm">甲功（TSH / FT4）</td><td>甲低；全垂体功能低下可仅表现为严重胆汁淤积 + 低血糖</td></tr>
+      <tr><td class="nm">凝血（PT / INR / APTT）</td><td>肝合成功能 + 维 K 缺乏；早期即异常 → 代谢病 / 严重肝病</td></tr>
+      <tr><td class="nm"><b>空腹 4h + 餐后腹部超声</b></td><td>胆囊大小 / 形态 / 餐后收缩、三角征、肝门纤维块、囊肿、脾大</td></tr>
+      <tr><td class="nm">血 / 尿培养（有感染征象）</td><td>脓毒症 / UTI 需立即抗感染</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="bluebox">
+    <div class="t">📋 医嘱与准备要点</div>
+    <ul class="chk do" style="margin-top:2px">
+      <li>超声必须<b>禁食 4h + 餐后复查</b>——餐后收缩率是 BA 超声评估的一半</li>
+      <li>MMP-7 送检时<b>注明日龄</b>——0–30 天新生儿要用更高的分层切点（页③）</li>
+      <li>凝血异常先补维生素 K₁</li>
+      <li>低血糖反复者留血糖 + 同步胰岛素 / 代谢筛查标本</li>
+      <li>检查<b>并行开、并行做</b>，不要串行等结果——BA 的窗口以天计</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 页3 抢BA ================= -->
+<section class="card page" id="page3">
+
+  <div class="card-head"><span class="step-no red">③</span><h2>紧急排除胆道闭锁（BA）</h2></div>
+  <p class="card-sub">BA 占可识别病因 25–40%，是最常见的可识别病因；肝门纤维块进行性闭塞胆道，<b>Kasai 手术时机直接决定自体肝生存率</b>。</p>
+
+  <div class="vargrid">
+    <div class="vartile a"><div class="vh">25–40%</div><div class="vq">BA 占婴儿胆汁淤积可识别病因的比例——最常见的可识别病因</div></div>
+    <div class="vartile b"><div class="vh">≤45 天</div><div class="vq">Kasai 最佳手术窗口；时间以天计，不是以月计</div></div>
+    <div class="vartile c"><div class="vh">~89%</div><div class="vq">&lt;30 天手术者 15 年自体肝生存（日本数据）</div></div>
+    <div class="vartile d"><div class="vh">0.95–0.99</div><div class="vq">血清 MMP-7 诊断 BA 的 AUC（多项研究）</div></div>
+  </div>
+
+  <div class="amberbox">
+    <div class="t">👀 一眼线索</div>
+    一般状况好、体重正常、<b>仅黄疸 + 白陶土便 = 高度警惕 BA</b>。第一动作不是退黄，是<b>抢时间排除 BA</b>。
+  </div>
+
+  <h3 class="sub">无创检查的诊断性能总表</h3>
+  <div class="tscroll"><table style="min-width:640px">
+    <thead><tr><th>检查</th><th>敏感度</th><th>特异度</th><th>切点 / 判读</th><th>定位</th></tr></thead>
+    <tbody>
+      <tr><td class="nm"><b>血清 MMP-7</b></td><td>95–98%</td><td>93–95%</td><td>总体 ~10–18 ng/mL（AUC 0.98–0.99）；<b>0–30 天新生儿建议更高切点 ~28 ng/mL</b>（敏感度 86% / 特异度 96%）；NPV 91–98%</td><td>近年最有价值无创标志物，联合 GGT 进一步提高准确性</td></tr>
+      <tr><td class="nm">超声 三角征（TC sign）</td><td>~80–85%（49–85%）</td><td><b>95–100%</b></td><td>肝门纤维块厚度 &gt;3.4 mm；<b>&lt;30 天敏感度下降</b>，观察者间差异大</td><td>最特异单一声像，但阴性不能排除</td></tr>
+      <tr><td class="nm">超声 胆囊异常</td><td>—</td><td>—</td><td>长径 &lt;1.5 cm、形态不规则、壁僵硬毛糙、<b>餐后收缩率 &lt;20%</b>、条索状无腔</td><td>需空腹 4h + 餐后复查</td></tr>
+      <tr><td class="nm">超声联合模型</td><td colspan="2">AUC 0.905</td><td>GGT + 三角征 + 胆囊，优于任一单项</td><td>多指标联合是方向</td></tr>
+      <tr><td class="nm">GGT</td><td>~77–88%</td><td>~73–93%</td><td><span class="mono">&gt;500 IU/L</span> 高度提示 BA（AUC 0.82）；非 BA 组罕见 &gt;500</td><td>便宜易得，受胎龄 / AFP 等影响</td></tr>
+      <tr><td class="nm">肝胆核素显像</td><td>高</td><td>假阳性高</td><td>肠道无显像提示梗阻</td><td>不能单独确诊，仅辅助</td></tr>
+      <tr><td class="nm">MRCP</td><td>90–100%</td><td>36–96%（波动大）</td><td>小婴儿胆系纤细，可靠性有限</td><td><b>不作为主要诊断依据</b></td></tr>
+      <tr><td class="nm">肝穿刺活检</td><td>较高</td><td>较高</td><td>宜生后 6 周后；胆管增生 / 胆栓 / 汇管区纤维化支持 BA；&lt;6 周可假阴性</td><td>术前鉴别，与造影同期常用</td></tr>
+      <tr><td class="nm"><b>腹腔镜 / 术中胆道造影</b></td><td>金标准</td><td>金标准</td><td>造影剂不入肝内胆管 / 十二指肠即确诊</td><td>可同期 Kasai；临床高度怀疑时尽早外科转诊</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="redbox">
+    <div class="t">🚨 时间窗与预后数据</div>
+    加拿大：<b>&lt;30 天 vs &gt;91 天</b> Kasai，10 年以上自体肝生存 <b>49% vs 15%</b>；日本：&lt;30 天组 15 年自体肝生存 <b>88.9%</b>，30–45 天最佳，&gt;90 天显著下降。但日龄<b>不是绝对禁忌</b>——大日龄（92–157 天，中位 109 天）手术仍有术后 1 年自体肝生存 ~68%、退黄率 68%。<b>不要因等待逐项检查而错过窗口。</b>
+  </div>
+
+  <h3 class="sub">床旁动作</h3>
+  <ul class="chk do">
+    <li>空腹 4h + 餐后超声（三角征 / 胆囊 / 餐后收缩率）+ <b>MMP-7（注明日龄）</b>+ GGT，<b>并行</b>完成</li>
+    <li>高度怀疑 → <b>当天外科转诊</b>，术中胆道造影金标准、可同期 Kasai；力争 <b>≤45 天</b></li>
+  </ul>
+
+  <div class="bluebox">
+    <div class="t">🩺 术后随访（住院医最常接手的部分）</div>
+    术后反流性胆管炎发生率 <b>~51.5%</b>，与自体肝衰竭风险升高相关（HR ~3.6）——<b>发热 + 胆红素回升 / 大便颜色变浅 = 胆管炎，立即抗生素</b>。术后 3–6 个月 TB 仍 &gt;100 μmol/L → <b>尽快肝移植评估</b>。
+  </div>
+</section>
+
+<!-- ================= 页4 病因分层 ================= -->
+<section class="card page" id="page4">
+
+  <div class="card-head"><span class="step-no purple">④</span><h2>GGT/TBA 分层与病因速查</h2></div>
+  <p class="card-sub">判别核心就一个：GGT。先用 GGT / TBA 把方向分成三层，再按病因卡定向。</p>
+
+  <h3 class="sub">总纲：GGT / TBA 三层分流</h3>
+  <div class="tscroll"><table>
+    <thead><tr><th style="width:30%">生化模式</th><th>指向</th><th>红旗线索 / 下一步</th></tr></thead>
+    <tbody>
+      <tr><td class="nm"><b>GGT 明显升高</b></td><td>BA、Alagille、PFIC3、胆总管囊肿</td><td>Alagille：特殊面容 + 肺动脉狭窄 / 杂音 + 蝶形椎骨 + 角膜后胚胎环 → JAG1/NOTCH2；GGT&gt;500 高度提示 BA</td></tr>
+      <tr><td class="nm"><b>GGT 不高 + TBA 明显升高</b></td><td>PFIC1（ATP8B1）、PFIC2（ABCB11）</td><td>PFIC1：腹泻 / 胰腺炎 / 耳聋；PFIC2：<b>肝癌风险高</b>；基因 panel</td></tr>
+      <tr><td class="nm"><b>GGT 不高 + TBA 正常 / 低</b></td><td>先天性胆汁酸合成缺陷（CBAS）</td><td>尿 / 血胆汁酸谱；口服初级胆汁酸疗效好，<b>延误可致肝衰竭</b></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="sub">临床表型判别：见到什么，想什么</h3>
+  <div class="tscroll"><table class="mid">
+    <thead><tr><th style="width:52%">床旁表现</th><th>指向</th></tr></thead>
+    <tbody>
+      <tr><td>一般状况好、体重正常、仅黄疸 + 白陶土便（2 月龄内）</td><td><span class="tag red">高度警惕 BA</span></td></tr>
+      <tr><td>病容、反应差、生命体征异常、多系统受累</td><td><span class="tag blue">感染 / 代谢病</span></td></tr>
+      <tr><td>早产 + 肠切除 + 长期 TPN</td><td><span class="tag grey">TPN 相关胆汁淤积</span></td></tr>
+      <tr><td>皮肤瘙痒 + 黄色瘤 + 高胆固醇</td><td><span class="tag green">Alagille</span></td></tr>
+      <tr><td>耳聋 + 胆汁淤积</td><td><span class="tag purple">TJP2 / USP53 / PFIC 相关</span></td></tr>
+      <tr><td>单纯 TBA 持续升高、其余肝功多正常</td><td><span class="tag grey">NTCP 缺陷（SLC10A1）</span> 我国相对多见，多无需特殊治疗</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="sub">八个病因卡<span class="n">线索 → 动作 → 转归</span></h3>
+
+  <div class="dz c-blue">
+    <div class="dz-t">感染（CMV / UTI / 脓毒症等）<span class="tag blue">~12% · 可治</span></div>
+    <div class="kv"><span class="k">线索</span><span>黄疸 + 病容 / 血小板减少 / 肝大 = 先想感染；<b>UTI 与脓毒症可仅以黄疸为唯一首发</b></span>
+    <span class="k">动作</span><span>血 / 尿培养 · 血常规 + 网织红 · 尿常规（异常即培养）· 疑先天感染查病原学 + 听力 + 头颅影像——要"宿主 + 多系统"证据，不能只凭一项病原学阳性定因</span>
+    <span class="k">转归</span><span>针对性抗感染后淤胆多可恢复</span></div>
+  </div>
+
+  <div class="dz c-purple">
+    <div class="dz-t">内分泌（甲低 / 全垂体功能低下）<span class="tag purple">~5% · 最易漏</span></div>
+    <div class="kv"><span class="k">线索</span><span>严重胆汁淤积 + <b>顽固性低血糖</b> = 先查垂体；全垂体可<b>仅表现为淤胆 + 低血糖</b>，早期其他表现可不明显</span>
+    <span class="k">动作</span><span>TSH / FT4 · 空腹血糖（低血糖 + 淤胆 → 垂体激素全套，请内分泌会诊）</span>
+    <span class="k">转归</span><span>激素替代后淤胆多随之缓解</span></div>
+  </div>
+
+  <div class="dz c-amber">
+    <div class="dz-t">NICCD 希特林缺陷<span class="tag amber">换配方就是治疗</span></div>
+    <div class="kv"><span class="k">线索</span><span>圆胖脸 + 低血糖 + 低白蛋白 + <b>AST≫ALT</b> + <b>AFP 异常升高</b> + 凝血异常 + 高血氨 + 瓜氨酸升高</span>
+    <span class="k">动作</span><span>血氨 + 氨基酸谱（瓜氨酸）+ AFP + 凝血；确诊前先<b>无乳糖 + 强化 MCT 配方</b>——等基因结果再换就晚了</span>
+    <span class="k">转归</span><span>多数婴儿期后随代谢成熟缓解，预后好；延误可发生严重代谢危象</span></div>
+  </div>
+
+  <div class="dz c-grey">
+    <div class="dz-t">其他遗传代谢病速查</div>
+    <div class="kv"><span class="k">半乳糖血症</span><span>黄疸 + 呕吐 + 肝大 + <b>白内障</b> + 大肠杆菌败血症 → 尿还原物质 → 阳性即<b>禁乳糖 / 半乳糖</b></span>
+    <span class="k">酪氨酸血症Ⅰ型</span><span>快速肝大 + 出血 + 低血糖 → 血琥珀酰丙酮 → <b>低苯丙 / 低酪饮食 + 尼替西龙</b></span>
+    <span class="k">α1-AT 缺乏</span><span>西方多见（10–20%），我国相对少 → α1-AT 表型 / 浓度</span>
+    <span class="k">囊性纤维化</span><span>慢性咳嗽 + 胎粪性肠梗阻史 + 生长落后 → 汗氯离子试验</span>
+    <span class="k">储积病</span><span>肝脾大 + 神经系统表现 / 黄斑樱桃红斑（Niemann-Pick）→ 代谢会诊 + 酶学 / 基因</span></div>
+  </div>
+
+  <div class="dz c-green">
+    <div class="dz-t">Alagille 综合征<span class="tag green">2–14% · GGT 高</span></div>
+    <div class="kv"><span class="k">线索</span><span>瘙痒 + 黄色瘤 + 高胆固醇 + <b>特殊面容（额突 / 眼距宽 / 鞍鼻 / 尖颏）+ 肺动脉狭窄 / 心脏杂音</b>（JAG1 / NOTCH2）</span>
+    <span class="k">动作</span><span>心脏超声 · 脊柱 X 线（蝶形椎骨）· 眼科（角膜后胚胎环）· 基因检测</span>
+    <span class="k">转归</span><span>瘙痒管理为主；<b>氯马昔巴特（maralixibat）用于 ≥1 岁 Alagille</b></span></div>
+  </div>
+
+  <div class="dz c-blue">
+    <div class="dz-t">PFIC 家族性肝内胆汁淤积<span class="tag blue">GGT 不高 + TBA 高</span></div>
+    <div class="kv"><span class="k">线索</span><span><b>GGT 不高 + TBA 明显升高</b> = PFIC1（ATP8B1）/ PFIC2（ABCB11）；<b>GGT 高、像梗阻</b> = PFIC3（ABCB4）；耳聋 + 淤胆 → TJP2 / USP53 / PFIC 相关</span>
+    <span class="k">要点</span><span>PFIC1：腹泻 / 复发性胰腺炎 / 感音神经性耳聋 / 咳嗽；PFIC2：淤胆更重，<b>肝癌风险高</b>，需肿瘤监测；PFIC3 生化上"像 BA"，需基因鉴别</span>
+    <span class="k">动作</span><span>基因 panel 一次送检</span></div>
+  </div>
+
+  <div class="dz c-amber">
+    <div class="dz-t">先天性胆汁酸合成缺陷 CBAS<span class="tag amber">可治性最好</span></div>
+    <div class="kv"><span class="k">线索</span><span><b>GGT 不高 + TBA 正常 / 低</b> + 淤胆——"淤胆但测不出胆汁酸"，因为合成通路断了</span>
+    <span class="k">动作</span><span>尿 / 血<b>胆汁酸谱</b>（常规 TBA 化验测不到异常中间产物，必须送谱）</span>
+    <span class="k">转归</span><span>多数口服初级胆汁酸（胆酸 / 鹅去氧胆酸）<b>疗效好</b>；延误可致肝衰竭</span></div>
+  </div>
+
+  <div class="dz c-grey">
+    <div class="dz-t">TPN 相关 / NTCP 缺陷 / 特发性</div>
+    <div class="kv"><span class="k">线索</span><span>早产 + 肠切除 + 长期 TPN = TPN 淤胆（~6.5%）；<b>单纯 TBA 持续升高、其余肝功多正常 = NTCP 缺陷</b>（SLC10A1，我国相对多见）</span>
+    <span class="k">动作</span><span>TPN 相关：尽早停静脉营养 / 促肠内 / 改含鱼油制剂，多可恢复；NTCP 多无需特殊治疗</span>
+    <span class="k">注意</span><span><b>特发性 / 新生儿肝炎是排除性诊断</b>——先排完 BA 与可治病因再贴标签（基因诊断进步后占比从 &gt;65% 降至 ~15–26%）</span></div>
+  </div>
+</section>
+
+<!-- ================= 页5 治疗剂量 ================= -->
+<section class="card page" id="page5">
+
+  <div class="card-head"><span class="step-no green">⑤</span><h2>治疗与剂量</h2></div>
+  <p class="card-sub">病因优先，支持全程；剂量按表抄，给药前双人核对。</p>
+
+  <h3 class="sub">病因特异性治疗</h3>
+  <div class="tscroll"><table class="slim">
+    <thead><tr><th style="width:34%">病因</th><th>特异性治疗</th></tr></thead>
+    <tbody>
+      <tr><td class="nm">胆道闭锁</td><td>Kasai（力争 ≤45 天）；术后 3–6 个月 TB 仍 &gt;100 μmol/L → 尽快肝移植评估</td></tr>
+      <tr><td class="nm">NICCD</td><td>无乳糖 + 强化 MCT 配方；后续高脂高蛋白低碳水</td></tr>
+      <tr><td class="nm">CBAS</td><td>补充初级胆汁酸（胆酸 / 鹅去氧胆酸），按尿胆汁酸谱调整</td></tr>
+      <tr><td class="nm">甲低 / 全垂体功能低下</td><td>激素替代</td></tr>
+      <tr><td class="nm">半乳糖血症</td><td>避免乳糖 / 半乳糖</td></tr>
+      <tr><td class="nm">酪氨酸血症 Ⅰ 型</td><td>低苯丙 / 低酪饮食 + 尼替西龙</td></tr>
+      <tr><td class="nm">UTI / 脓毒症</td><td>针对性抗感染</td></tr>
+      <tr><td class="nm">TPN 相关</td><td>停静脉营养或改鱼油制剂</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="greenbox">
+    <div class="t">🛡️ 全程支持：所有淤胆婴儿都做（不做 = 治疗打折扣）</div>
+    能量目标为同体重正常婴儿的 <b>130–150%</b>（可夜间加餐）；<b>MCT 配方</b>（不需胆汁酸即可吸收）；<b>常规补充并监测脂溶性维生素</b>——淤胆时它们吸收不了：维 A 5000–25000 U/d · 维 D₃ 120–200 U/kg/d · 维 E 15–25 U/kg/d · 维 K₁ 2.5–5 mg/次 bid–tid。
+  </div>
+
+  <h3 class="sub">静态剂量速查表<span class="n">按体重直接抄 · 单位见注</span></h3>
+  <div class="tscroll"><table style="min-width:600px">
+    <thead><tr><th>kg</th><th>2.0</th><th>2.5</th><th>3.0</th><th>3.5</th><th>4.0</th><th>4.5</th><th>5.0</th></tr></thead>
+    <tbody>
+      <tr><td class="nm">UDCA<br><span style="font-weight:500;color:var(--ink3);font-size:11px">10–20 mg/kg/d 分 2–3 次</span></td><td><span class="mono">20–40</span></td><td><span class="mono">25–50</span></td><td><span class="mono">30–60</span></td><td><span class="mono">35–70</span></td><td><span class="mono">40–80</span></td><td><span class="mono">45–90</span></td><td><span class="mono">50–100</span></td></tr>
+      <tr><td class="nm">维 D₃<br><span style="font-weight:500;color:var(--ink3);font-size:11px">120–200 U/kg/d</span></td><td><span class="mono">240–400</span></td><td><span class="mono">300–500</span></td><td><span class="mono">360–600</span></td><td><span class="mono">420–700</span></td><td><span class="mono">480–800</span></td><td><span class="mono">540–900</span></td><td><span class="mono">600–1000</span></td></tr>
+      <tr><td class="nm">维 E<br><span style="font-weight:500;color:var(--ink3);font-size:11px">15–25 U/kg/d</span></td><td><span class="mono">30–50</span></td><td><span class="mono">38–63</span></td><td><span class="mono">45–75</span></td><td><span class="mono">53–88</span></td><td><span class="mono">60–100</span></td><td><span class="mono">68–113</span></td><td><span class="mono">75–125</span></td></tr>
+    </tbody>
+  </table></div>
+  <p style="font-size:11.5px;color:var(--ink3);margin:6px 2px 0">单位：UDCA 为 mg/d，维 D₃ / 维 E 为 U/d。表外体重按 mg/kg 换算。维 A（5000–25000 U/d）与维 K₁（2.5–5 mg/次 bid–tid）为固定剂量，不入表。以科室规范为准。</p>
+
+  <div class="redbox">
+    <div class="t">⚠️ 用药红线：熊去氧胆酸（UDCA）</div>
+    UDCA <b>10–20 mg/kg/d</b>（可至 30）——<b>胆道完全梗阻、BA 未排除前禁用</b>（机制见页⑥红线 1）。瘙痒二线：利福平（小剂量 5 mg/kg 起始，监测肝损）；考来烯胺 0.25–0.5 g/kg/d；maralixibat 用于 ≥1 岁 Alagille 胆汁淤积性瘙痒。
+  </div>
+</section>
+
+<!-- ================= 页6 红线随访 ================= -->
+<section class="card page" id="page6">
+
+  <div class="card-head"><span class="step-no amber">⑥</span><h2>红线 · 陷阱 · 随访</h2></div>
+  <p class="card-sub">先记禁区，再谈诊治——这条路径上最贵的错误都是"想当然"。</p>
+
+  <h3 class="sub">五大红线</h3>
+  <div class="redline"><span class="no">1</span><span><b>BA 未排除前不用 UDCA</b>——胆道完全梗阻时利胆药不仅无益，还可能加重淤胆。"先利胆退黄"是这条路径上最经典的错误第一反应。</span></div>
+  <div class="redline"><span class="no">2</span><span><b>CMV 单独阳性 ≠ 病因</b>——需宿主 + 多系统证据（血小板减少、听力损伤、小头、脑室周围钙化、间质性肺炎）。<b>CMV 阳性的白陶土便患儿，照样可能是 BA</b>；单凭 IgM/DNA 阳性归因会延误手术或特殊配方。</span></div>
+  <div class="redline"><span class="no">3</span><span><b>一次超声 / MMP-7 阴性 ≠ 排除 BA</b>——&lt;30 天婴儿三角征敏感度下降、观察者间差异大；MMP-7 新生儿要用 ~28 ng/mL 分层切点，用成人切点判读会漏。临床高度怀疑时仍应外科探查。</span></div>
+  <div class="redline"><span class="no">4</span><span><b>不要因等待逐项检查错过窗口</b>——检查并行开、并行做；临床高度怀疑时外科会诊提前。Kasai 窗口以天计（&lt;30 天 vs &gt;91 天：10 年自体肝生存 49% vs 15%）。</span></div>
+  <div class="redline"><span class="no">5</span><span><b>不要因为日龄大就放弃 Kasai</b>——大日龄（92–157 天，中位 109 天）手术仍有术后 1 年自体肝生存 ~68%、退黄率 68%；&gt;90 天效果差但不是绝对禁忌。</span></div>
+
+  <h3 class="sub">经典陷阱</h3>
+  <ul class="chk">
+    <li><b>经皮胆红素 / 肉眼无法区分结合与未结合</b>——凡触发线内黄疸，第一张单子就是分离胆红素</li>
+    <li><b>UTI / 脓毒症可仅以黄疸起病</b>——没有"明确感染灶"也要查尿</li>
+    <li><b>全垂体功能低下可仅表现为淤胆 + 顽固低血糖</b>——早期其他表现可以不明显</li>
+    <li><b>医生亲自看粪便 &gt; 家长描述 / 照片</b>——白陶土便的判断差之毫厘谬以千里</li>
+    <li><b>空腹超声没禁食 4h = 胆囊评估作废</b>——餐后收缩率是 BA 超声评估的一半</li>
+    <li><b>特发性 / 新生儿肝炎是排除性诊断</b>——先排完 BA 与可治病因，再贴这个标签</li>
+  </ul>
+
+  <h3 class="sub">随访节奏</h3>
+  <div class="tl">
+    <div class="tlrow"><div class="when">当天<br>（达标住院）</div><div class="what">一线检查 + 空腹 4h / 餐后超声 + MMP-7 <b>并行完成</b>；高度怀疑 BA 者当天外科 / 消化会诊；每日查房<b>记录大便颜色（照片）+ 尿色</b>，胆红素趋势以 DB / TB 为主</div></div>
+    <div class="tlrow"><div class="when">住院期间</div><div class="what">营养支持（能量 130–150% + MCT + 脂溶性维生素）；凝血异常随访维 K₁ 效果；低血糖者持续监测；病因确诊即启动针对性治疗</div></div>
+    <div class="tlrow"><div class="when">门诊<br>（未达标）</div><div class="what">1–2 周内复查 TB + DB；家长大便比色卡宣教 + <b>大便颜色照片随访</b>；持续 &gt;14 / 21 天仍黄或便色变浅 → 立即回院走达标流程</div></div>
+    <div class="tlrow"><div class="when">BA 术后</div><div class="what">警惕反流性胆管炎（~51.5%，HR ~3.6 关联自体肝衰竭）：<b>发热 + 胆红素回升 / 大便变浅 → 立即抗生素</b>；术后 3–6 个月 TB 仍 &gt;100 μmol/L → 肝移植评估</div></div>
+    <div class="tlrow"><div class="when">病因治疗</div><div class="what">NICCD 配方调整后复查肝功 / 血糖 / 凝血；CBAS 按尿胆汁酸谱调药；PFIC2 建立肿瘤监测；Alagille 瘙痒管理；内分泌病激素替代后复查淤胆与血糖</div></div>
+    <div class="tlrow"><div class="when">出院宣教</div><div class="what">大便颜色拍照记录 + 脂溶性维生素续方 + 明确复诊节点——<b>大便颜色变浅是复发 / 进展的最敏感家庭信号</b></div></div>
+  </div>
+
+  <div class="sumbox">
+    <div class="t">核心八条</div>
+    <ol>
+      <li><b>触发线</b>——足月 &gt;14 天 / 早产 &gt;21 天仍黄、退而复现、白陶土便：今天查分离胆红素</li>
+      <li><b>经皮 / 肉眼盲区</b>——无法区分结合 / 未结合，是延误 BA 最常见原因</li>
+      <li><b>达标（DB &gt;1 mg/dL 或 DB/TB &gt;20%）第一动作不是退黄，是抢 BA</b></li>
+      <li><b>BA 两件套</b>——空腹 4h + 餐后超声（三角征 / 胆囊收缩率）+ MMP-7（新生儿切点 ~28）；GGT&gt;500 高度提示</li>
+      <li><b>GGT/TBA 三层分流</b>——高 GGT 想梗阻；不高 + TBA 高想 PFIC；不高 + TBA 低想 CBAS</li>
+      <li><b>UDCA 红线</b>——BA 未排除 / 胆道完全梗阻禁用</li>
+      <li><b>两个"≠"</b>——CMV 阳性 ≠ 病因；一次超声 / MMP-7 阴性 ≠ 排除 BA</li>
+      <li><b>窗口以天计</b>——Kasai 力争 ≤45 天；&lt;30 天手术 15 年自体肝生存 ~89%；大日龄不是绝对禁忌</li>
+    </ol>
+    <div class="koujue">终极口诀：两周三周黄不退，亲手看便看尿；分离胆红素过线，先抢闭锁再退黄；GGT 高低定方向，熊去氧胆酸先别碰；CMV 阳性别定因，大便颜色天天看。</div>
+  </div>
+
+  <h3 class="sub">主要依据</h3>
+  <div class="ref"><span class="ref-t">中华医学会儿科学分会感染学组 / 消化学组等.</span> 婴儿胆汁淤积症诊断与治疗专家共识. 中华儿科杂志, 2022, 60(10):990-997.</div>
+  <div class="ref"><span class="ref-t">国家卫生健康委员会.</span> 先天性胆道闭锁诊疗指南（2025 版）. 临床肝胆病杂志, 2025, 41(9).</div>
+  <div class="ref"><span class="ref-t">中国罕见病联盟遗传性肝病分会等.</span> 家族性肝内胆汁淤积症诊疗专家共识（2026）. 中华儿科杂志.</div>
+  <div class="ref"><span class="ref-t">胆道闭锁诊断及治疗指南（2018 版）.</span> 中华小儿外科杂志.</div>
+  <div class="ref"><span class="ref-t">NASPGHAN/ESPGHAN 联合指南.</span> Infantile cholestatic jaundice evaluation（DB&gt;1 mg/dL 即转诊）.</div>
+  <div class="ref"><span class="ref-t">BSPGHAN 2016.</span> Investigation of Neonatal Conjugated Jaundice（CB&gt;25 μmol/L 或 &gt;25% TB）.</div>
+  <div class="ref"><span class="ref-t">Serum MMP-7 for discriminating biliary atresia.</span> Cell Biosci 2024（cutoff 18 ng/mL；新生儿 28.1 ng/mL）· PMID 31604829（10.37 ng/mL，AUC 0.98）.</div>
+  <div class="ref"><span class="ref-t">Biliary Atresia: advances in early diagnosis.</span>（三角征特异度 95–100%）· <span class="ref-t">Impacts of Early Kasai Portoenterostomy.</span>（&lt;30 天组 15 年自体肝生存 88.9%）.</div>
+</section>
+
+<footer class="foot">
+  新生儿胆汁淤积 · 床旁指南 住院医师版 v2.0 · 2026-09-28<br>
+  仅供专业医务人员内部学习参考，具体诊疗请结合临床判断与上级医师指导<br>
+  整合：中国 2022 婴儿胆汁淤积共识 · 卫健委 2025 BA 指南 · NASPGHAN/ESPGHAN · BSPGHAN/NICE · PFIC 2026 共识 · MMP-7 诊断性能研究
+</footer>
+
+</div>
+
+<script>
+'use strict';
+window.goPage = function(n){
+  document.body.setAttribute('data-page', String(n));
+  var pages=document.querySelectorAll('section.card.page');
+  for(var i=0;i<pages.length;i++){ pages[i].classList.toggle('active', pages[i].id==='page'+n); }
+  var tabs=document.querySelectorAll('nav.pager .ptab');
+  for(var j=0;j<tabs.length;j++){ tabs[j].classList.toggle('active', j===n-1); }
+  window.scrollTo({top:0});
+};
+window.toggleLong = function(on){
+  document.body.classList.toggle('longmode', !!on);
+  if(on){ document.querySelectorAll('section.card.page').forEach(function(p){p.classList.add('active');}); }
+  else{ window.goPage(parseInt(document.body.getAttribute('data-page')||'1',10)); }
+  window.scrollTo({top:0});
+};
+</script>
+</body>
+</html>
